@@ -1,0 +1,52 @@
+<div class="filters">
+  <button mat-raised-button (click)="filterLeads('all')">All</button>
+  <button mat-raised-button (click)="filterLeads('new')">New</button>
+  <button mat-raised-button (click)="filterLeads('contacted')">Contacted</button>
+  <button mat-raised-button (click)="filterLeads('claimed')">Claimed</button>
+</div>
+
+<table mat-table [dataSource]="filteredLeads" class="mat-elevation-z8">
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Name</th>
+    <td mat-cell *matCellDef="let lead">{{ lead.name }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="company">
+    <th mat-header-cell *matHeaderCellDef>Company</th>
+    <td mat-cell *matCellDef="let lead">{{ lead.company }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="email">
+    <th mat-header-cell *matHeaderCellDef>Email</th>
+    <td mat-cell *matCellDef="let lead">{{ lead.email }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="phone">
+    <th mat-header-cell *matHeaderCellDef>Phone</th>
+    <td mat-cell *matCellDef="let lead">{{ lead.phone }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="status">
+    <th mat-header-cell *matHeaderCellDef>Status</th>
+    <td mat-cell *matCellDef="let lead">
+      <span class="status" [ngClass]="lead.status">{{ lead.status | titlecase }}</span>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef>Actions</th>
+    <td mat-cell *matCellDef="let lead">
+      <div class="filters">
+        <button *ngIf="lead.status === 'new'" mat-raised-button color="primary" (click)="claimLead(lead)">
+          Claim
+        </button>
+      </div>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['name', 'company', 'email', 'phone', 'status', 'actions']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['name', 'company', 'email', 'phone', 'status', 'actions']; trackBy: trackByLeadId"
+  appHighlight [leadStatus]="row.status">
+</tr>
+
+</table>
